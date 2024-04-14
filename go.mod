@@ -2,7 +2,10 @@ module scan2epub
 
 go 1.22.2
 
-require github.com/urfave/cli/v2 v2.27.1
+require (
+	github.com/joho/godotenv v1.5.1
+	github.com/urfave/cli/v2 v2.27.1
+)
 
 require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect

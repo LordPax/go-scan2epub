@@ -2,6 +2,8 @@ package commands
 
 import (
 	"fmt"
+	"scan2epub/service"
+	"scan2epub/utils"
 
 	cli "github.com/urfave/cli/v2"
 )
@@ -24,8 +26,13 @@ func convertAction(c *cli.Context) error {
 
 	fmt.Printf("Converting %d chapters\n", c.NArg())
 	chaps := c.Args().Slice()
+	if err := service.Scan2Epub(chaps); err != nil {
+		return err
+	}
 
-	fmt.Printf("Chapters: %v\n", chaps)
+	if err := utils.RmTmpDir(); err != nil {
+		return err
+	}
 
 	return nil
 }
