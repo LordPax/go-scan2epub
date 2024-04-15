@@ -2,6 +2,7 @@ package commands
 
 import (
 	"fmt"
+	"os"
 	"scan2epub/service"
 	"scan2epub/utils"
 
@@ -17,7 +18,20 @@ var ConvertCommand = cli.Command{
 	Action:    convertAction,
 }
 
-var convertFlags = []cli.Flag{}
+var convertFlags = []cli.Flag{
+	&cli.StringFlag{
+		Name:    "output",
+		Aliases: []string{"o"},
+		Usage:   "output directory",
+		Action: func(c *cli.Context, value string) error {
+			if value != "" {
+				os.Unsetenv("EPUB_DIR")
+				os.Setenv("EPUB_DIR", value)
+			}
+			return nil
+		},
+	},
+}
 
 func convertAction(c *cli.Context) error {
 	if c.NArg() == 0 {
