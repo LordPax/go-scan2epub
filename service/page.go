@@ -51,6 +51,7 @@ func getListOfPages(url, path string) []Page {
 		}
 
 		if ext == "webp" {
+			// TODO: Add webp support
 			fmt.Fprintf(os.Stderr, "Webp format is not supported\n")
 			continue
 		}
