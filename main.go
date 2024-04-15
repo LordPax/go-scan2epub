@@ -38,6 +38,7 @@ func main() {
 	app.Action = mainAction
 	app.Commands = []*cli.Command{
 		&commands.ConvertCommand,
+		&commands.ExistsCommand,
 	}
 
 	if err := app.Run(os.Args); err != nil {

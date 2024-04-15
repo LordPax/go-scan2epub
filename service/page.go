@@ -50,6 +50,11 @@ func getListOfPages(url, path string) []Page {
 			break
 		}
 
+		if ext == "webp" {
+			fmt.Fprintf(os.Stderr, "Webp format is not supported\n")
+			continue
+		}
+
 		pathName := fmt.Sprintf("%s/%s.%s", path, formatPage, ext)
 		pageFound := Page{Url: imgURL, Path: pathName}
 		page = append(page, pageFound)
@@ -63,7 +68,8 @@ func getPageFromDir(path string) []string {
 
 	files, _ := os.ReadDir(path)
 	for _, file := range files {
-		pages = append(pages, file.Name())
+		fullPath := path + "/" + file.Name()
+		pages = append(pages, fullPath)
 	}
 
 	return pages

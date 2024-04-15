@@ -26,6 +26,10 @@ func downloadChap(chap string) error {
 	pages := getListOfPages(urlChap, pathChap)
 	fmt.Printf("%d pages found\n", len(pages))
 
+	if len(pages) == 0 {
+		return fmt.Errorf("No pages found for chapter %s", chap)
+	}
+
 	for _, page := range pages {
 		go downloadPage(page.Url, page.Path, channel)
 	}
