@@ -10,7 +10,7 @@ var home, _ = os.UserHomeDir()
 
 var (
 	NAME           = "scan2epub"
-	VERSION        = "0.1.0"
+	VERSION        = "1.0.0"
 	USAGE          = "CLI tool to convert scan to epub"
 	CONFIG_DIR     = home + "/.config/scan2epub"
 	CONFIG_FILE    = CONFIG_DIR + "/config"

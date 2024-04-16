@@ -1,0 +1,55 @@
+name: Build and Test
+
+permissions:
+  contents: write
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macOS-latest ]
+        arch: [ amd64, arm64, i386 ]
+
+      exclude:
+        - os: windows-latest
+          arch: arm64
+        - os: windows-latest
+          arch: i386
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.22.2'
+
+    - name: Install dependencies
+      run: go get .
+
+    - name: Build
+      run: go build -v ./...
+
+    - name: Archive
+      run: |
+        tar -czf scan2epub-${{ matrix.os }}-${{ matrix.arch }}-${{ github.ref }}.tar.gz scan2epub README.md install.sh
+
+    - name: Release
+      uses: softprops/action-gh-release@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body_path: CHANGELOG.md
+        draft: false
+        prerelease: false
+        files: |
+          scan2epub-${{ matrix.os }}-${{ matrix.arch }}-${{ github.ref }}.tar.gz
