@@ -39,7 +39,7 @@ jobs:
 
     - name: Archive
       run: |
-        tar -czf scan2epub-${{ matrix.os }}-${{ github.ref }}.tar.gz scan2epub README.md install.sh
+        tar -czf ./scan2epub.tar.gz scan2epub README.md install.sh
 
     - name: Release
       uses: softprops/action-gh-release@v2
@@ -52,4 +52,4 @@ jobs:
         draft: false
         prerelease: false
         files: |
-          scan2epub-${{ matrix.os }}-${{ github.ref }}.tar.gz
+          scan2epub.tar.gz
