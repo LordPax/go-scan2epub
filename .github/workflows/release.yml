@@ -36,11 +36,11 @@ jobs:
       run: go get .
 
     - name: Build
-      run: go build -v ./...
+      run: go build -o scan2epub .
 
     - name: Archive
       run: |
-        tar -czf ./scan2epub.tar.gz scan2epub README.md install.sh
+        tar -czf scan2epub.tar.gz scan2epub README.md install.sh
 
     - name: Release
       uses: softprops/action-gh-release@v2
