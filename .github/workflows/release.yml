@@ -12,7 +12,8 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ ubuntu-latest, windows-latest, macOS-latest ]
+        os: [ ubuntu-latest ]
+        # os: [ ubuntu-latest, windows-latest, macOS-latest ]
         # arch: [ amd64, arm64, i386 ]
 
       # exclude:
@@ -51,5 +52,15 @@ jobs:
         body_path: CHANGELOG.md
         draft: false
         prerelease: false
-        files: |
-          scan2epub.tar.gz
+
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}
+      with:
+        upload_url: ${{ steps.release.outputs.upload_url }}
+        asset_path: ./scan2epub.tar.gz
+        asset_name: scan2epub.tar.gz
+        asset_content_type: application/gzip
+
+
