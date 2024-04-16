@@ -23,3 +23,13 @@ jobs:
 
     - name: Build
       run: go build -v ./...
+
+    - name: Go Release Binaries
+      uses: softprops/action-gh-release@v1
+      with:
+        token: ${{ secrets.TOKEN }}
+        release_name: ${{ github.event.head_commit.message }}
+        tag: ${{ github.ref }}
+        body: ${{ github.event.head_commit.message }}
+        draft: false
+        prerelease: false
