@@ -12,34 +12,18 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ ubuntu-latest ]
-        # os: [ ubuntu-latest, windows-latest, macOS-latest ]
-        # arch: [ amd64, arm64, i386 ]
+        os: [ linux, windows, darwin ]
+        arch: [ amd64, arm64, 386 ]
+        exclude:
+          - os: windows
+            arch: arm64
+          - os: darwin
+            arch: i386
 
-      # exclude:
-      #   - os: windows-latest
-      #     arch: arm64
-      #   - os: windows-latest
-      #     arch: i386
-
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
-
-    - name: Env
-      run: |
-        case ${{ matrix.os }} in
-          ubuntu-latest)
-            echo "OS=linux" >> $GITHUB_ENV
-            ;;
-          windows-latest)
-            echo "OS=windows" >> $GITHUB_ENV
-            ;;
-          macOS-latest)
-            echo "OS=darwin" >> $GITHUB_ENV
-            ;;
-        esac
 
     - name: Set up Go
       uses: actions/setup-go@v4
@@ -49,12 +33,17 @@ jobs:
     - name: Install dependencies
       run: go get .
 
+    - run: |
+        mkdir scan2epub
+        cp README.md install.sh CHANGELOG.md scan2epub
+
     - name: Build
-      run: go build -o scan2epub .
+      run: GOARCH=${{ matrix.arch }} GOOS=${{ matrix.os }} go build -o scan2epub/scan2epub .
 
     - name: Archive
       run: |
-        tar -czf scan2epub-${{ env.OS }}-${{ github.ref_name }}.tar.gz scan2epub README.md install.sh
+        tar -czf \
+          scan2epub-${{ matrix.os }}-${{ matrix.arch }}-${{ github.ref_name }}.tar.gz scan2epub
 
     - name: Release
       uses: softprops/action-gh-release@v2
@@ -67,4 +56,4 @@ jobs:
         draft: false
         prerelease: false
         files: |
-          scan2epub-${{ env.OS }}-${{ github.ref_name }}.tar.gz
+          scan2epub-${{ matrix.os }}-${{ matrix.arch }}-${{ github.ref_name }}.tar.gz
