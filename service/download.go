@@ -5,6 +5,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"path"
 	"scan2epub/utils"
 )
 
@@ -15,7 +16,7 @@ func downloadChap(chap string) error {
 	url := os.Getenv("URL")
 	tempDir := os.Getenv("TMP_DIR")
 	urlChap := url + "/" + chap
-	pathChap := tempDir + "/" + chap
+	pathChap := path.Join(tempDir, chap)
 
 	if !utils.FileExist(pathChap) {
 		if err := os.MkdirAll(pathChap, 0755); err != nil {

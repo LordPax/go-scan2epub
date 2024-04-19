@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"path"
 	"scan2epub/config"
 	"strconv"
 )
@@ -39,7 +40,7 @@ func formatPageName(page string) string {
 	return page
 }
 
-func getListOfPages(url, path string) []Page {
+func getListOfPages(url, pathPage string) []Page {
 	var page []Page
 
 	for i := 0; ; i++ {
@@ -56,20 +57,22 @@ func getListOfPages(url, path string) []Page {
 			continue
 		}
 
-		pathName := fmt.Sprintf("%s/%s.%s", path, formatPage, ext)
+		fileName := fmt.Sprintf("%s.%s", formatPage, ext)
+		pathName := path.Join(pathPage, fileName)
 		pageFound := Page{Url: imgURL, Path: pathName}
+
 		page = append(page, pageFound)
 	}
 
 	return page
 }
 
-func getPageFromDir(path string) []string {
+func getPageFromDir(pathPage string) []string {
 	var pages []string
 
-	files, _ := os.ReadDir(path)
+	files, _ := os.ReadDir(pathPage)
 	for _, file := range files {
-		fullPath := path + "/" + file.Name()
+		fullPath := path.Join(pathPage, file.Name())
 		pages = append(pages, fullPath)
 	}
 

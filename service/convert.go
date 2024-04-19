@@ -3,6 +3,7 @@ package service
 import (
 	"fmt"
 	"os"
+	"path"
 	"scan2epub/utils"
 
 	epub "github.com/go-shiori/go-epub"
@@ -13,7 +14,7 @@ func convertChap(chap string) error {
 
 	tempDir := os.Getenv("TMP_DIR")
 	epubDir := os.Getenv("EPUB_DIR")
-	pathChap := tempDir + "/" + chap
+	pathChap := path.Join(tempDir, chap)
 
 	if !utils.FileExist(pathChap) {
 		return fmt.Errorf("Chapter %s not found", chap)
@@ -64,12 +65,13 @@ func createEpub(pages []string, epubDir string, chap string) error {
 		}
 	}
 
-	epubFileName := fmt.Sprintf("%s/chap-%s.epub", epubDir, chap)
-	if err := epubFile.Write(epubFileName); err != nil {
+	epubFileName := fmt.Sprintf("chap-%s.epub", chap)
+	epubPath := path.Join(epubDir, epubFileName)
+	if err := epubFile.Write(epubPath); err != nil {
 		return err
 	}
 
-	fmt.Printf("Epub created at %s\n", epubFileName)
+	fmt.Printf("Epub created at %s\n", epubPath)
 	return nil
 }
 
