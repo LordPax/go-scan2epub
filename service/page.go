@@ -51,12 +51,6 @@ func getListOfPages(url, pathPage string) []Page {
 			break
 		}
 
-		if ext == "webp" {
-			// TODO: Add webp support
-			fmt.Fprintf(os.Stderr, "Webp format is not supported\n")
-			continue
-		}
-
 		fileName := fmt.Sprintf("%s.%s", formatPage, ext)
 		pathName := path.Join(pathPage, fileName)
 		pageFound := Page{Url: imgURL, Path: pathName}

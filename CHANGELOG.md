@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+* Convert webp images to jpg
+
 ### Changed
 
 * Don't stop process when a chapter fails to download

@@ -5,6 +5,7 @@ import (
 	"os"
 	"path"
 	"scan2epub/utils"
+	"strings"
 
 	epub "github.com/go-shiori/go-epub"
 )
@@ -50,12 +51,7 @@ func createEpub(pages []string, epubDir string, chap string) error {
 	epubFile.SetAuthor(author)
 	epubFile.SetDescription(description)
 
-	cover, err := epubFile.AddImage(pages[0], "")
-	if err != nil {
-		return err
-	}
-
-	if err := epubFile.SetCover(cover, ""); err != nil {
+	if err := addCover(epubFile, pages[0]); err != nil {
 		return err
 	}
 
@@ -75,6 +71,34 @@ func createEpub(pages []string, epubDir string, chap string) error {
 	return nil
 }
 
+func addCover(epubFile *epub.Epub, page string) error {
+	if ext := path.Ext(page); ext == ".webp" {
+		img, _, err := utils.DecodeImage(page)
+		if err != nil {
+			return err
+		}
+
+		dir, name := path.Split(page)
+		fileName := strings.Split(name, ".")[0]
+		page = path.Join(dir, fileName+".jpg")
+
+		if err := utils.EncodeImage(page, img, "jpeg"); err != nil {
+			return err
+		}
+	}
+
+	cover, err := epubFile.AddImage(page, "")
+	if err != nil {
+		return err
+	}
+
+	if err := epubFile.SetCover(cover, ""); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func addImageToEpub(epubFile *epub.Epub, page string) error {
 	img, format, err := utils.DecodeImage(page)
 	if err != nil {
@@ -84,9 +108,17 @@ func addImageToEpub(epubFile *epub.Epub, page string) error {
 	width, height := utils.DimensionsImage(img)
 	if width > height {
 		img = utils.RotateImage(img)
-		if err := utils.EncodeImage(page, img, format); err != nil {
-			return err
-		}
+	}
+
+	if format == "webp" {
+		dir, name := path.Split(page)
+		fileName := strings.Split(name, ".")[0]
+		page = path.Join(dir, fileName+".jpg")
+		format = "jpeg"
+	}
+
+	if err := utils.EncodeImage(page, img, format); err != nil {
+		return err
 	}
 
 	image, err := epubFile.AddImage(page, "")

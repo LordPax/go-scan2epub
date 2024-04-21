@@ -6,6 +6,7 @@ require (
 	github.com/go-shiori/go-epub v1.2.1
 	github.com/joho/godotenv v1.5.1
 	github.com/urfave/cli/v2 v2.27.1
+	golang.org/x/image v0.15.0
 )
 
 require (

@@ -6,6 +6,9 @@ import (
 	"image/jpeg"
 	"image/png"
 	"os"
+	"path"
+
+	"golang.org/x/image/webp"
 )
 
 func FileExist(file string) bool {
@@ -29,6 +32,14 @@ func DecodeImage(file string) (image.Image, string, error) {
 		return nil, "", err
 	}
 	defer f.Close()
+
+	if ext := path.Ext(file); ext == ".webp" {
+		img, err := webp.Decode(f)
+		if err != nil {
+			return nil, "", err
+		}
+		return img, "webp", nil
+	}
 
 	img, format, err := image.Decode(f)
 	if err != nil {
@@ -61,7 +72,7 @@ func EncodeImage(file string, img image.Image, format string) error {
 	defer f.Close()
 
 	switch format {
-	case "jpeg":
+	case "jpeg", "jpg":
 		return jpeg.Encode(f, img, nil)
 	case "png":
 		return png.Encode(f, img)
