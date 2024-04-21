@@ -18,7 +18,7 @@ jobs:
           - os: windows
             arch: arm64
           - os: darwin
-            arch: i386
+            arch: 386
 
     runs-on: ubuntu-latest
 
