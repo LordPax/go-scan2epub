@@ -38,7 +38,12 @@ jobs:
         cp README.md install.sh CHANGELOG.md scan2epub
 
     - name: Build
-      run: GOARCH=${{ matrix.arch }} GOOS=${{ matrix.os }} go build -o scan2epub/scan2epub .
+      run: |
+        name="scan2epub"
+        if [ "${{ matrix.os }}" = "windows" ]; then
+          name="${name}.exe"
+        fi
+        GOARCH=${{ matrix.arch }} GOOS=${{ matrix.os }} go build -o "scan2epub/${name}" .
 
     - name: Archive
       run: |
