@@ -15,6 +15,7 @@ var (
 	USAGE          = "CLI tool to convert scan to epub"
 	CONFIG_DIR     = path.Join(home, ".config", "scan2epub")
 	CONFIG_FILE    = path.Join(CONFIG_DIR, "config")
+	LOG_FILE       = path.Join(CONFIG_DIR, "log")
 	AVAILABLE_EXT  = []string{"jpg", "jpeg", "png", "webp"}
 	CONFIG_EXEMPLE = `URL=https://lelscans.net/mangas/one-piece
 EPUB_DIR=` + path.Join(home, "scan2epub") + `
@@ -43,6 +44,15 @@ func InitConfig() error {
 		}
 		fmt.Printf("Config file created at %s\n", CONFIG_FILE)
 	}
+
+	if !utils.FileExist(LOG_FILE) {
+		if _, err := os.Create(LOG_FILE); err != nil {
+			return err
+		}
+		fmt.Printf("Log file created at %s\n", LOG_FILE)
+	}
+
+	os.Setenv("LOG_FILE", LOG_FILE)
 
 	return nil
 }

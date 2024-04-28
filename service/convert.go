@@ -11,7 +11,12 @@ import (
 )
 
 func convertChap(chap string) error {
-	fmt.Printf("Converting chapter %s to epub\n", chap)
+	log, err := utils.GetLog()
+	if err != nil {
+		return err
+	}
+
+	log.Printf("Converting chapter %s to epub\n", chap)
 
 	tempDir := os.Getenv("TMP_DIR")
 	epubDir := os.Getenv("EPUB_DIR")
@@ -40,6 +45,11 @@ func convertChap(chap string) error {
 }
 
 func createEpub(pages []string, epubDir string, chap string) error {
+	log, err := utils.GetLog()
+	if err != nil {
+		return err
+	}
+
 	author := os.Getenv("AUTHOR")
 	description := os.Getenv("DESCRIPTION")
 
@@ -67,7 +77,7 @@ func createEpub(pages []string, epubDir string, chap string) error {
 		return err
 	}
 
-	fmt.Printf("Epub created at %s\n", epubPath)
+	log.Printf("Epub created at %s\n", epubPath)
 	return nil
 }
 

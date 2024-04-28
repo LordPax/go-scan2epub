@@ -1,14 +1,19 @@
 package service
 
 import (
-	"fmt"
 	"os"
+	"scan2epub/utils"
 )
 
 func Scan2Epub(chaps []string) error {
+	log, err := utils.GetLog()
+	if err != nil {
+		return err
+	}
+
 	for _, chap := range chaps {
 		if err := downloadChap(chap); err != nil {
-			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+			log.PrintfErr("%v\n", err)
 			continue
 		}
 		if err := convertChap(chap); err != nil {

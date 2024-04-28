@@ -10,7 +10,12 @@ import (
 )
 
 func downloadChap(chap string) error {
-	fmt.Printf("Downloading chapter %s\n", chap)
+	log, err := utils.GetLog()
+	if err != nil {
+		return err
+	}
+
+	log.Printf("Downloading chapter %s\n", chap)
 
 	channel := make(chan error)
 	url := os.Getenv("URL")
@@ -25,7 +30,7 @@ func downloadChap(chap string) error {
 	}
 
 	pages := getListOfPages(urlChap, pathChap)
-	fmt.Printf("%d pages found\n", len(pages))
+	log.Printf("%d pages found\n", len(pages))
 
 	if len(pages) == 0 {
 		return fmt.Errorf("No pages found for chapter %s", chap)
@@ -45,6 +50,12 @@ func downloadChap(chap string) error {
 }
 
 func downloadPage(url, path string, ch chan<- error) {
+	log, err := utils.GetLog()
+	if err != nil {
+		ch <- err
+		return
+	}
+
 	out, err := os.Create(path)
 	if err != nil {
 		ch <- err
@@ -65,6 +76,6 @@ func downloadPage(url, path string, ch chan<- error) {
 		return
 	}
 
-	fmt.Printf("Downloaded page from %s\n", url)
+	log.Printf("Downloaded page from %s\n", url)
 	ch <- nil
 }

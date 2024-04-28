@@ -1,5 +1,12 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+* Add log system
+* Add command interval
+
 ## [1.1.0] - 2024-04-21
 
 ### Added
