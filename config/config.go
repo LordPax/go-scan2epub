@@ -11,7 +11,7 @@ var home, _ = os.UserHomeDir()
 
 var (
 	NAME           = "scan2epub"
-	VERSION        = "1.1.0"
+	VERSION        = "1.2.0"
 	USAGE          = "CLI tool to convert scan to epub"
 	CONFIG_DIR     = path.Join(home, ".config", "scan2epub")
 	CONFIG_FILE    = path.Join(CONFIG_DIR, "config")
