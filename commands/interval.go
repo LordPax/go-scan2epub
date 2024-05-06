@@ -2,6 +2,7 @@ package commands
 
 import (
 	"fmt"
+	"scan2epub/service"
 	"scan2epub/utils"
 
 	cli "github.com/urfave/cli/v2"
@@ -10,22 +11,22 @@ import (
 var IntervalCommand = cli.Command{
 	Name:      "inter",
 	Usage:     "Convert at regular intervals and increment the chapter number",
-	ArgsUsage: "<interval> <chap>",
+	ArgsUsage: "<cron> <chap>",
 	Aliases:   []string{"i"},
 	Action:    intervalAction,
 }
 
 func intervalAction(c *cli.Context) error {
-	log, err := utils.GetLog()
-	if err != nil {
+	if c.NArg() < 2 {
+		return fmt.Errorf("no chapter or cron specified")
+	}
+
+	cronStr := c.Args().Get(0)
+	chap := c.Args().Get(1)
+
+	if err := service.CronDownloadChap(cronStr, chap); err != nil {
 		return err
 	}
-
-	if c.NArg() < 2 {
-		return fmt.Errorf("no chapter specified")
-	}
-
-	log.Printf("Converting %d chapters\n", c.NArg())
 
 	if err := utils.RmTmpDir(); err != nil {
 		return err

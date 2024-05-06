@@ -7,6 +7,10 @@
 * Add log system
 * Add command interval
 
+### Changed
+
+* move image processing from `utils/utils.go` to `utils/image.go`
+
 ## [1.1.0] - 2024-04-21
 
 ### Added

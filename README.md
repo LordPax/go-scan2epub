@@ -14,13 +14,7 @@ Golang adaptation of [scan-to-epub](https://github.com/LordPax/scan-to-epub.git)
 http://www.example.com/{chap}/{page}.{png|jpg|jpeg|webp}
 ```
 
-<!--
-## Pre-requis
-
-* Converts .webp files to other image formats and vice versa [libwebp-1.1.0](https://developers.google.com/speed/webp/docs/compiling)
--->
-
-## Installation
+## Build and install
 
 1. Clone the repository:
 
