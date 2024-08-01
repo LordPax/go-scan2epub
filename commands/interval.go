@@ -3,7 +3,6 @@ package commands
 import (
 	"fmt"
 	"scan2epub/service"
-	"scan2epub/utils"
 
 	cli "github.com/urfave/cli/v2"
 )
@@ -18,17 +17,13 @@ var IntervalCommand = cli.Command{
 
 func intervalAction(c *cli.Context) error {
 	if c.NArg() < 2 {
-		return fmt.Errorf("no chapter or cron specified")
+		return fmt.Errorf("No chapter or cron specified")
 	}
 
 	cronStr := c.Args().Get(0)
 	chap := c.Args().Get(1)
 
 	if err := service.CronDownloadChap(cronStr, chap); err != nil {
-		return err
-	}
-
-	if err := utils.RmTmpDir(); err != nil {
 		return err
 	}
 

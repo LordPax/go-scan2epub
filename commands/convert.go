@@ -23,16 +23,12 @@ func convertAction(c *cli.Context) error {
 	}
 
 	if c.NArg() == 0 {
-		return fmt.Errorf("no chapter specified")
+		return fmt.Errorf("No chapter specified")
 	}
 
 	log.Printf("Converting %d chapters\n", c.NArg())
 	chaps := c.Args().Slice()
 	if err := service.Scan2Epub(chaps); err != nil {
-		return err
-	}
-
-	if err := utils.RmTmpDir(); err != nil {
 		return err
 	}
 

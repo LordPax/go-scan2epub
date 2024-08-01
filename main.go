@@ -11,46 +11,7 @@ import (
 	cli "github.com/urfave/cli/v2"
 )
 
-func mainAction(c *cli.Context) error {
-	return fmt.Errorf("no command specified")
-}
-
-var mainFlags = []cli.Flag{
-	&cli.StringFlag{
-		Name:    "output",
-		Aliases: []string{"o"},
-		Usage:   "output directory",
-		Action: func(c *cli.Context, value string) error {
-			if value == "" {
-				return fmt.Errorf("output directory is empty")
-			}
-
-			os.Unsetenv("EPUB_DIR")
-			os.Setenv("EPUB_DIR", value)
-
-			return nil
-		},
-	},
-	&cli.BoolFlag{
-		Name:    "silent",
-		Aliases: []string{"s"},
-		Usage:   "disable printing log to stdout",
-		Action: func(c *cli.Context, value bool) error {
-			log, err := utils.GetLog()
-			if err != nil {
-				return err
-			}
-
-			log.SetSilent(value)
-
-			return nil
-		},
-	},
-}
-
 func main() {
-	os.Setenv("SILENT", "false")
-
 	if err := config.InitConfig(); err != nil {
 		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 		os.Exit(1)
@@ -77,8 +38,8 @@ func main() {
 	app.Name = config.NAME
 	app.Usage = config.USAGE
 	app.Version = config.VERSION
-	app.Action = mainAction
-	app.Flags = mainFlags
+	app.Action = commands.MainAction
+	app.Flags = commands.MainFlags
 	app.Commands = []*cli.Command{
 		&commands.ConvertCommand,
 		&commands.ExistsCommand,

@@ -20,7 +20,7 @@ var existFlags = []cli.Flag{}
 
 func existAction(c *cli.Context) error {
 	if c.NArg() == 0 {
-		return fmt.Errorf("no chapter specified")
+		return fmt.Errorf("No chapter specified")
 	}
 
 	chaps := c.Args().Slice()[0]

@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+* Move main command in `commands/base.go`
+
 ## [1.2.0] - 2024-05-07
 
 ### Added
