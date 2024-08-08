@@ -6,6 +6,7 @@
 
 * Move main command in `commands/base.go`
 * Minor text changes
+* Improve install script
 
 ## [1.2.0] - 2024-05-07
 
