@@ -5,6 +5,7 @@ import (
 	"os"
 	"scan2epub/commands"
 	"scan2epub/config"
+	"scan2epub/lang"
 	"scan2epub/utils"
 
 	"github.com/joho/godotenv"
@@ -34,9 +35,14 @@ func main() {
 		os.Exit(1)
 	}
 
+	l := lang.GetLocalize()
+	l.SetLang(os.Getenv("LANG"))
+	l.AddStrings("en_US.UTF-8", &lang.EN_STRINGS)
+	l.AddStrings("fr_FR.UTF-8", &lang.FR_STRINGS)
+
 	app := cli.NewApp()
 	app.Name = config.NAME
-	app.Usage = config.USAGE
+	app.Usage = l.Get("usage")
 	app.Version = config.VERSION
 	app.Action = commands.MainAction
 	app.Flags = commands.MainFlags

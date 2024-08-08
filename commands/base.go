@@ -3,10 +3,17 @@ package commands
 import (
 	"fmt"
 	"os"
+	"scan2epub/lang"
 	"scan2epub/utils"
 
 	cli "github.com/urfave/cli/v2"
 )
+
+var l *lang.Localize
+
+func init() {
+	l = lang.GetLocalize()
+}
 
 var MainFlags = []cli.Flag{
 	&cli.StringFlag{
@@ -42,5 +49,5 @@ var MainFlags = []cli.Flag{
 }
 
 func MainAction(c *cli.Context) error {
-	return fmt.Errorf("No command specified")
+	return fmt.Errorf(l.Get("no-command"))
 }
