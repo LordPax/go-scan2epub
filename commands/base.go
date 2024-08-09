@@ -9,45 +9,43 @@ import (
 	cli "github.com/urfave/cli/v2"
 )
 
-var l *lang.Localize
+func MainFlags() []cli.Flag {
+	l := lang.GetLocalize()
+	return []cli.Flag{
+		&cli.StringFlag{
+			Name:    "output",
+			Aliases: []string{"o"},
+			Usage:   l.Get("output-desc"),
+			Action: func(c *cli.Context, value string) error {
+				if value == "" {
+					return fmt.Errorf(l.Get("output-dir-empty"))
+				}
 
-func init() {
-	l = lang.GetLocalize()
-}
+				os.Unsetenv("EPUB_DIR")
+				os.Setenv("EPUB_DIR", value)
 
-var MainFlags = []cli.Flag{
-	&cli.StringFlag{
-		Name:    "output",
-		Aliases: []string{"o"},
-		Usage:   "output directory",
-		Action: func(c *cli.Context, value string) error {
-			if value == "" {
-				return fmt.Errorf("Output directory is empty")
-			}
-
-			os.Unsetenv("EPUB_DIR")
-			os.Setenv("EPUB_DIR", value)
-
-			return nil
+				return nil
+			},
 		},
-	},
-	&cli.BoolFlag{
-		Name:    "silent",
-		Aliases: []string{"s"},
-		Usage:   "disable printing log to stdout",
-		Action: func(c *cli.Context, value bool) error {
-			log, err := utils.GetLog()
-			if err != nil {
-				return err
-			}
+		&cli.BoolFlag{
+			Name:    "silent",
+			Aliases: []string{"s"},
+			Usage:   l.Get("silent"),
+			Action: func(c *cli.Context, value bool) error {
+				log, err := utils.GetLog()
+				if err != nil {
+					return err
+				}
 
-			log.SetSilent(value)
+				log.SetSilent(value)
 
-			return nil
+				return nil
+			},
 		},
-	},
+	}
 }
 
 func MainAction(c *cli.Context) error {
+	l := lang.GetLocalize()
 	return fmt.Errorf(l.Get("no-command"))
 }

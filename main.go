@@ -37,17 +37,17 @@ func main() {
 
 	l := lang.GetLocalize()
 	l.SetLang(os.Getenv("LANG"))
-	l.AddStrings("en_US.UTF-8", &lang.EN_STRINGS)
-	l.AddStrings("fr_FR.UTF-8", &lang.FR_STRINGS)
+	l.AddStrings(&lang.EN_STRINGS, "en_US.UTF-8", "en_GB.UTF-8", "en")
+	l.AddStrings(&lang.FR_STRINGS, "fr_FR.UTF-8", "fr_CA.UTF-8", "fr")
 
 	app := cli.NewApp()
 	app.Name = config.NAME
 	app.Usage = l.Get("usage")
 	app.Version = config.VERSION
 	app.Action = commands.MainAction
-	app.Flags = commands.MainFlags
+	app.Flags = commands.MainFlags()
 	app.Commands = []*cli.Command{
-		&commands.ConvertCommand,
+		commands.ConvertCommand(),
 		&commands.ExistsCommand,
 		&commands.IntervalCommand,
 	}

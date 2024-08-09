@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+### Added
+
+* Add custom localize to translate text
+* Add translation for command `base`
+* Add translation for command `convert`
+
 ### Changed
 
 * Move main command in `commands/base.go`

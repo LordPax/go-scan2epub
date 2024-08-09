@@ -6,4 +6,7 @@ var EN_STRINGS = LangString{
 	"output-desc":      "Output directory",
 	"output-dir-empty": "Output directory is empty",
 	"silent":           "Disable printing log to stdout",
+	"convert-usage":    "Convert scan to epub",
+	"no-chapter":       "No chapter specified",
+	"converting":       "Converting %d chapters\n",
 }

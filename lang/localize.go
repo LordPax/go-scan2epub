@@ -27,8 +27,10 @@ func (l *Localize) SetLang(lang string) {
 	l.lang = lang
 }
 
-func (l *Localize) AddStrings(lang string, strings *LangString) {
-	l.strings[lang] = strings
+func (l *Localize) AddStrings(strings *LangString, lang ...string) {
+	for _, la := range lang {
+		l.strings[la] = strings
+	}
 }
 
 func (l *Localize) Get(key string) string {
