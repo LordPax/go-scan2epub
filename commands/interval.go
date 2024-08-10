@@ -2,22 +2,27 @@ package commands
 
 import (
 	"fmt"
+	"scan2epub/lang"
 	"scan2epub/service"
 
 	cli "github.com/urfave/cli/v2"
 )
 
-var IntervalCommand = cli.Command{
-	Name:      "inter",
-	Usage:     "Convert at regular intervals and increment the chapter number",
-	ArgsUsage: "<cron> <chap>",
-	Aliases:   []string{"i"},
-	Action:    intervalAction,
+func IntervalCommand() *cli.Command {
+	l := lang.GetLocalize()
+	return &cli.Command{
+		Name:      "inter",
+		Usage:     l.Get("interval-usage"),
+		ArgsUsage: "<cron> <chap>",
+		Aliases:   []string{"i"},
+		Action:    intervalAction,
+	}
 }
 
 func intervalAction(c *cli.Context) error {
+	l := lang.GetLocalize()
 	if c.NArg() < 2 {
-		return fmt.Errorf("No chapter or cron specified")
+		return fmt.Errorf(l.Get("no-chapter-cron"))
 	}
 
 	cronStr := c.Args().Get(0)

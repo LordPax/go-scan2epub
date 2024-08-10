@@ -2,6 +2,7 @@ package service
 
 import (
 	"os"
+	"scan2epub/lang"
 	"scan2epub/utils"
 	"strconv"
 
@@ -66,15 +67,16 @@ func CronDownloadChap(cronStr, chap string) error {
 }
 
 func cronFunc(currentChap *int, ch chan<- error) {
+	l := lang.GetLocalize()
 	log, err := utils.GetLog()
 	if err != nil {
 		ch <- err
 		return
 	}
 
-	log.Printf("Current chapter %d\n", *currentChap)
+	log.Printf(l.Get("current-chapter"), *currentChap)
 	if !CheckChapExist(strconv.Itoa(*currentChap)) {
-		log.PrintfErr("Chapter %d not found\n", currentChap)
+		log.PrintfErr(l.Get("chapter-not-found"), currentChap)
 		return
 	}
 
@@ -89,5 +91,5 @@ func cronFunc(currentChap *int, ch chan<- error) {
 	}
 
 	*currentChap++
-	log.Printf("Next chapter %d\n", *currentChap)
+	log.Printf(l.Get("next-chapter"), *currentChap)
 }

@@ -5,14 +5,15 @@
 ### Added
 
 * Add custom localize to translate text
-* Add translation for command `base`
-* Add translation for command `convert`
+* Add translation for command `base` `convert` `exist` `interval`
+* Add translation for service `convert` `download` `scan-to-epub`
 
 ### Changed
 
 * Move main command in `commands/base.go`
 * Minor text changes
 * Improve install script
+* rename `service/scanToEpub.go` to `service/scan-to-epub.go`
 
 ## [1.2.0] - 2024-05-07
 

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"scan2epub/lang"
 	"scan2epub/utils"
 	"strings"
 
@@ -11,19 +12,20 @@ import (
 )
 
 func convertChap(chap string) error {
+	l := lang.GetLocalize()
 	log, err := utils.GetLog()
 	if err != nil {
 		return err
 	}
 
-	log.Printf("Converting chapter %s to epub\n", chap)
+	log.Printf(l.Get("convert-chapter"), chap)
 
 	tempDir := os.Getenv("TMP_DIR")
 	epubDir := os.Getenv("EPUB_DIR")
 	pathChap := path.Join(tempDir, chap)
 
 	if !utils.FileExist(pathChap) {
-		return fmt.Errorf("Chapter %s not found", chap)
+		return fmt.Errorf(l.Get("chapter-not-found"), chap)
 	}
 
 	if !utils.FileExist(epubDir) {
@@ -34,7 +36,7 @@ func convertChap(chap string) error {
 
 	pages := getPageFromDir(pathChap)
 	if len(pages) == 0 {
-		return fmt.Errorf("No pages found for chapter %s", chap)
+		return fmt.Errorf(l.Get("pages-not-found"), chap)
 	}
 
 	if err := createEpub(pages, epubDir, chap); err != nil {
@@ -45,6 +47,7 @@ func convertChap(chap string) error {
 }
 
 func createEpub(pages []string, epubDir string, chap string) error {
+	l := lang.GetLocalize()
 	log, err := utils.GetLog()
 	if err != nil {
 		return err
@@ -77,7 +80,7 @@ func createEpub(pages []string, epubDir string, chap string) error {
 		return err
 	}
 
-	log.Printf("Epub created at %s\n", epubPath)
+	log.Printf(l.Get("epub-created"), epubPath)
 	return nil
 }
 

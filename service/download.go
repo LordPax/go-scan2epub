@@ -6,16 +6,18 @@ import (
 	"net/http"
 	"os"
 	"path"
+	"scan2epub/lang"
 	"scan2epub/utils"
 )
 
 func downloadChap(chap string) error {
+	l := lang.GetLocalize()
 	log, err := utils.GetLog()
 	if err != nil {
 		return err
 	}
 
-	log.Printf("Downloading chapter %s\n", chap)
+	log.Printf(l.Get("download-chapter"), chap)
 
 	channel := make(chan error)
 	url := os.Getenv("URL")
@@ -30,10 +32,10 @@ func downloadChap(chap string) error {
 	}
 
 	pages := getListOfPages(urlChap, pathChap)
-	log.Printf("%d pages found\n", len(pages))
+	log.Printf(l.Get("pages-found"), len(pages))
 
 	if len(pages) == 0 {
-		return fmt.Errorf("No pages found for chapter %s", chap)
+		return fmt.Errorf(l.Get("pages-not-found"), chap)
 	}
 
 	for _, page := range pages {
@@ -50,6 +52,7 @@ func downloadChap(chap string) error {
 }
 
 func downloadPage(url, path string, ch chan<- error) {
+	l := lang.GetLocalize()
 	log, err := utils.GetLog()
 	if err != nil {
 		ch <- err
@@ -76,6 +79,6 @@ func downloadPage(url, path string, ch chan<- error) {
 		return
 	}
 
-	log.Printf("Downloaded page from %s\n", url)
+	log.Printf(l.Get("downloaded-from"), url)
 	ch <- nil
 }

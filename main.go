@@ -48,8 +48,8 @@ func main() {
 	app.Flags = commands.MainFlags()
 	app.Commands = []*cli.Command{
 		commands.ConvertCommand(),
-		&commands.ExistsCommand,
-		&commands.IntervalCommand,
+		commands.ExistsCommand(),
+		commands.IntervalCommand(),
 	}
 
 	if err := app.Run(os.Args); err != nil {
