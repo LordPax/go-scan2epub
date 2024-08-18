@@ -1,12 +1,12 @@
 package service
 
 import (
-	"fmt"
 	"net/http"
 	"os"
 	"path"
 	"scan2epub/config"
 	"strconv"
+	"strings"
 )
 
 type Page struct {
@@ -19,15 +19,29 @@ func isPageExist(url string) bool {
 	return err == nil && resp.StatusCode == 200
 }
 
-func getWorkingUrl(url, page string) (string, string) {
+func getWorkingUrl(url, chap, page string) (string, string) {
 	for _, ext := range config.AVAILABLE_EXT {
-		imgURL := fmt.Sprintf("%s/%s.%s", url, page, ext)
+		imgURL := replaceValue(url, map[string]string{
+			"{chap}": chap,
+			"{page}": page,
+			"{ext}":  ext,
+		})
 		if isPageExist(imgURL) {
 			return imgURL, ext
 		}
 	}
 
 	return "", ""
+}
+
+func replaceValue(url string, data map[string]string) string {
+	newUrl := url
+
+	for k, v := range data {
+		newUrl = strings.Replace(newUrl, k, v, -1)
+	}
+
+	return newUrl
 }
 
 func formatPageName(page string) string {
@@ -40,19 +54,19 @@ func formatPageName(page string) string {
 	return page
 }
 
-func getListOfPages(url, pathPage string) []Page {
+func getListOfPages(url, chap, tmpPage string) []Page {
 	var page []Page
 
 	for i := 0; ; i++ {
 		formatPage := formatPageName(strconv.Itoa(i))
-		imgURL, ext := getWorkingUrl(url, formatPage)
+		imgURL, ext := getWorkingUrl(url, chap, formatPage)
 
 		if imgURL == "" {
 			break
 		}
 
-		fileName := fmt.Sprintf("%s.%s", formatPage, ext)
-		pathName := path.Join(pathPage, fileName)
+		// fileName := fmt.Sprintf("%s.%s", formatPage, ext)
+		pathName := path.Join(tmpPage, formatPage+"."+ext)
 		pageFound := Page{Url: imgURL, Path: pathName}
 
 		page = append(page, pageFound)

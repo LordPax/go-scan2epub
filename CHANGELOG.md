@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+* Improve url format
+
 ## [1.3.1] - 2024-08-10
 
 ### Fixed

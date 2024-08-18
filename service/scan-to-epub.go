@@ -30,8 +30,7 @@ func Scan2Epub(chaps []string) error {
 
 func CheckChapExist(chap string) bool {
 	url := os.Getenv("URL")
-	urlChap := url + "/" + chap
-	workingUrl, _ := getWorkingUrl(urlChap, "00")
+	workingUrl, _ := getWorkingUrl(url, chap, "00")
 
 	return workingUrl != ""
 }

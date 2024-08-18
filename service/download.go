@@ -21,17 +21,16 @@ func downloadChap(chap string) error {
 
 	channel := make(chan error)
 	url := os.Getenv("URL")
-	tempDir := os.Getenv("TMP_DIR")
-	urlChap := url + "/" + chap
-	pathChap := path.Join(tempDir, chap)
+	tmpDir := os.Getenv("TMP_DIR")
+	tmpChap := path.Join(tmpDir, chap)
 
-	if !utils.FileExist(pathChap) {
-		if err := os.MkdirAll(pathChap, 0755); err != nil {
+	if !utils.FileExist(tmpChap) {
+		if err := os.MkdirAll(tmpChap, 0755); err != nil {
 			return err
 		}
 	}
 
-	pages := getListOfPages(urlChap, pathChap)
+	pages := getListOfPages(url, chap, tmpChap)
 	log.Printf(l.Get("pages-found"), len(pages))
 
 	if len(pages) == 0 {
