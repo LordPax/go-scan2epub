@@ -1,10 +1,10 @@
 # Changelog
 
-## [Unreleased]
+## [1.4.0] - 2024-08-19
 
 ### Changed
 
-* Improve url format
+* Improve url format with parameter `chap`, `page` and `ext` (breaking change)
 
 ## [1.3.1] - 2024-08-10
 
@@ -25,7 +25,7 @@
 * Move main command in `commands/base.go`
 * Minor text changes
 * Improve install script
-* rename `service/scanToEpub.go` to `service/scan-to-epub.go`
+* Rename `service/scanToEpub.go` to `service/scan-to-epub.go`
 
 ## [1.2.0] - 2024-05-07
 
@@ -36,7 +36,7 @@
 
 ### Changed
 
-* move image processing from `utils/utils.go` to `utils/image.go`
+* Move image processing from `utils/utils.go` to `utils/image.go`
 
 ## [1.1.0] - 2024-04-21
 
