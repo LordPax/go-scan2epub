@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"scan2epub/config"
 	"scan2epub/lang"
 	"scan2epub/utils"
 	"strings"
@@ -20,8 +21,9 @@ func convertChap(chap string) error {
 
 	log.Printf(l.Get("convert-chapter"), chap)
 
+	defaultSource := config.CONFIG_INI.Section("").Key("default").String()
+	epubDir := config.CONFIG_INI.Section(defaultSource).Key("epub_dir").String()
 	tempDir := os.Getenv("TMP_DIR")
-	epubDir := os.Getenv("EPUB_DIR")
 	pathChap := path.Join(tempDir, chap)
 
 	if !utils.FileExist(pathChap) {
@@ -53,8 +55,9 @@ func createEpub(pages []string, epubDir string, chap string) error {
 		return err
 	}
 
-	author := os.Getenv("AUTHOR")
-	description := os.Getenv("DESCRIPTION")
+	defaultSource := config.CONFIG_INI.Section("").Key("default").String()
+	author := config.CONFIG_INI.Section(defaultSource).Key("author").String()
+	description := config.CONFIG_INI.Section(defaultSource).Key("description").String()
 
 	epubFile, err := epub.NewEpub("Chapter " + chap)
 	if err != nil {

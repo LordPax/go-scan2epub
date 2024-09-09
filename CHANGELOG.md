@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+* Change dotenv config to ini config (breaking change)
+
 ## [1.4.0] - 2024-08-19
 
 ### Changed

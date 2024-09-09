@@ -8,8 +8,8 @@ import (
 	"scan2epub/lang"
 	"scan2epub/utils"
 
-	"github.com/joho/godotenv"
 	cli "github.com/urfave/cli/v2"
+	ini "gopkg.in/ini.v1"
 )
 
 func main() {
@@ -25,7 +25,8 @@ func main() {
 	}
 	defer log.Close()
 
-	if err := godotenv.Load(config.CONFIG_FILE); err != nil {
+	config.CONFIG_INI, err = ini.Load(config.CONFIG_FILE)
+	if err != nil {
 		log.PrintfErr("%v\n", err)
 		os.Exit(1)
 	}

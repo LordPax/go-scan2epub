@@ -2,7 +2,7 @@ package commands
 
 import (
 	"fmt"
-	"os"
+	"scan2epub/config"
 	"scan2epub/lang"
 	"scan2epub/utils"
 
@@ -21,8 +21,22 @@ func MainFlags() []cli.Flag {
 					return fmt.Errorf(l.Get("output-dir-empty"))
 				}
 
-				os.Unsetenv("EPUB_DIR")
-				os.Setenv("EPUB_DIR", value)
+				defaultSource := config.CONFIG_INI.Section("").Key("default").String()
+				config.CONFIG_INI.Section(defaultSource).Key("epub_dir").SetValue(value)
+
+				return nil
+			},
+		},
+		&cli.StringFlag{
+			Name:    "source",
+			Aliases: []string{"S"},
+			Usage:   l.Get("source-desc"),
+			Action: func(c *cli.Context, value string) error {
+				if value == "" {
+					return fmt.Errorf(l.Get("source-empty"))
+				}
+
+				config.CONFIG_INI.Section("").Key("default").SetValue(value)
 
 				return nil
 			},

@@ -15,12 +15,14 @@ func ExistsCommand() *cli.Command {
 		Usage:     l.Get("exist-usage"),
 		ArgsUsage: "<chap>",
 		Aliases:   []string{"e"},
-		Flags:     existFlags,
+		Flags:     existFlags(),
 		Action:    existAction,
 	}
 }
 
-var existFlags = []cli.Flag{}
+func existFlags() []cli.Flag {
+	return []cli.Flag{}
+}
 
 func existAction(c *cli.Context) error {
 	l := lang.GetLocalize()

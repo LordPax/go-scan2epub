@@ -1,7 +1,7 @@
 package service
 
 import (
-	"os"
+	"scan2epub/config"
 	"scan2epub/lang"
 	"scan2epub/utils"
 	"strconv"
@@ -29,8 +29,11 @@ func Scan2Epub(chaps []string) error {
 }
 
 func CheckChapExist(chap string) bool {
-	url := os.Getenv("URL")
-	workingUrl, _ := getWorkingUrl(url, chap, "00")
+	defaultSource := config.CONFIG_INI.Section("").Key("default").String()
+	url := config.CONFIG_INI.Section(defaultSource).Key("url").String()
+	prefix := config.CONFIG_INI.Section(defaultSource).Key("prefix").String()
+
+	workingUrl, _ := getWorkingUrl(url, chap, prefix)
 
 	return workingUrl != ""
 }

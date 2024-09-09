@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"path"
+	"scan2epub/config"
 	"scan2epub/lang"
 	"scan2epub/utils"
 )
@@ -20,7 +21,8 @@ func downloadChap(chap string) error {
 	log.Printf(l.Get("download-chapter"), chap)
 
 	channel := make(chan error)
-	url := os.Getenv("URL")
+	defaultSource := config.CONFIG_INI.Section("").Key("default").String()
+	url := config.CONFIG_INI.Section(defaultSource).Key("url").String()
 	tmpDir := os.Getenv("TMP_DIR")
 	tmpChap := path.Join(tmpDir, chap)
 

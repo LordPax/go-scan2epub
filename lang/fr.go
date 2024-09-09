@@ -23,4 +23,6 @@ var FR_STRINGS = LangString{
 	"downloaded-from":    "Page téléchargée depuis %s\n",
 	"convert-chapter":    "Conversion du chapitre %s en epub\n",
 	"epub-created":       "Epub créé à %s\n",
+	"source-desc":        "Nom de la config dans le fichier config.ini",
+	"source-empty":       "Le nom de la source est vide",
 }
