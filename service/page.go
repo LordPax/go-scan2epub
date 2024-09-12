@@ -46,8 +46,10 @@ func replaceValue(url string, data map[string]string) string {
 
 func formatPageName(page string) string {
 	pageInt, _ := strconv.Atoi(page)
+	defaultSource := config.CONFIG_INI.Section("").Key("default").String()
+	format, _ := config.CONFIG_INI.Section(defaultSource).Key("format").Bool()
 
-	if pageInt < 10 {
+	if format && pageInt < 10 {
 		return "0" + page
 	}
 
@@ -57,7 +59,10 @@ func formatPageName(page string) string {
 func getListOfPages(url, chap, tmpPage string) []Page {
 	var page []Page
 
-	for i := 0; ; i++ {
+	defaultSource := config.CONFIG_INI.Section("").Key("default").String()
+	startAt, _ := config.CONFIG_INI.Section(defaultSource).Key("start_at").Int()
+
+	for i := startAt; ; i++ {
 		formatPage := formatPageName(strconv.Itoa(i))
 		imgURL, ext := getWorkingUrl(url, chap, formatPage)
 
@@ -65,7 +70,6 @@ func getListOfPages(url, chap, tmpPage string) []Page {
 			break
 		}
 
-		// fileName := fmt.Sprintf("%s.%s", formatPage, ext)
 		pathName := path.Join(tmpPage, formatPage+"."+ext)
 		pageFound := Page{Url: imgURL, Path: pathName}
 

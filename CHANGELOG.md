@@ -1,5 +1,24 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+* Add config parameter `format`, `name`
+
+### Changed
+
+* Change config parameter type of `start_at` to `int`
+
+### Fixed
+
+* Parameter `--source` has priority over `--output`
+* Now can download multiple source of manga
+
+### Removed
+
+* Remove config parameter `prefix`
+
 ## [1.5.0] - 2024-09-09
 
 ### Changed

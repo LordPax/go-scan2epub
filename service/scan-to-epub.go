@@ -31,9 +31,10 @@ func Scan2Epub(chaps []string) error {
 func CheckChapExist(chap string) bool {
 	defaultSource := config.CONFIG_INI.Section("").Key("default").String()
 	url := config.CONFIG_INI.Section(defaultSource).Key("url").String()
-	prefix := config.CONFIG_INI.Section(defaultSource).Key("prefix").String()
+	startAt, _ := config.CONFIG_INI.Section(defaultSource).Key("start_at").Int()
 
-	workingUrl, _ := getWorkingUrl(url, chap, prefix)
+	formatPage := formatPageName(strconv.Itoa(startAt))
+	workingUrl, _ := getWorkingUrl(url, chap, formatPage)
 
 	return workingUrl != ""
 }

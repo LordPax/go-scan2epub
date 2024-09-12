@@ -13,6 +13,20 @@ func MainFlags() []cli.Flag {
 	l := lang.GetLocalize()
 	return []cli.Flag{
 		&cli.StringFlag{
+			Name:    "source",
+			Aliases: []string{"S"},
+			Usage:   l.Get("source-desc"),
+			Action: func(c *cli.Context, value string) error {
+				if value == "" {
+					return fmt.Errorf(l.Get("source-empty"))
+				}
+
+				config.CONFIG_INI.Section("").Key("default").SetValue(value)
+
+				return nil
+			},
+		},
+		&cli.StringFlag{
 			Name:    "output",
 			Aliases: []string{"o"},
 			Usage:   l.Get("output-desc"),
@@ -23,20 +37,6 @@ func MainFlags() []cli.Flag {
 
 				defaultSource := config.CONFIG_INI.Section("").Key("default").String()
 				config.CONFIG_INI.Section(defaultSource).Key("epub_dir").SetValue(value)
-
-				return nil
-			},
-		},
-		&cli.StringFlag{
-			Name:    "source",
-			Aliases: []string{"S"},
-			Usage:   l.Get("source-desc"),
-			Action: func(c *cli.Context, value string) error {
-				if value == "" {
-					return fmt.Errorf(l.Get("source-empty"))
-				}
-
-				config.CONFIG_INI.Section("").Key("default").SetValue(value)
 
 				return nil
 			},
