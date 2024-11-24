@@ -1,7 +1,7 @@
 # Stage 1: Build the application
 FROM golang:1.23-alpine AS builder
 
-ARG VERSION=v1.7.0
+ARG VERSION
 ARG URL=https://github.com/LordPax/go-scan2epub
 
 WORKDIR /app

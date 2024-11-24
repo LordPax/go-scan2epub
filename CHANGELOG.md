@@ -5,6 +5,7 @@
 ### Added
 
 * Add Dockerfile to build and run the application in a container
+* Add bash script to build docker image
 
 ## [1.7.0] - 2024-11-24
 
