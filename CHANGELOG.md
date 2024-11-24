@@ -1,5 +1,18 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+* File name format
+* Create directory per chapter
+* Cron format to download the manga
+* Chapter to start downloading when using cron
+
+### Changed
+
+* Remove parameter for `interval` command
+
 ## [1.6.0] - 2024-09-12
 
 ### Added

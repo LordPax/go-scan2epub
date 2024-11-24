@@ -34,14 +34,14 @@ func getWorkingUrl(url, chap, page string) (string, string) {
 	return "", ""
 }
 
-func replaceValue(url string, data map[string]string) string {
-	newUrl := url
+func replaceValue(s string, data map[string]string) string {
+	newStr := s
 
 	for k, v := range data {
-		newUrl = strings.Replace(newUrl, k, v, -1)
+		newStr = strings.Replace(newStr, k, v, -1)
 	}
 
-	return newUrl
+	return newStr
 }
 
 func formatPageName(page string) string {

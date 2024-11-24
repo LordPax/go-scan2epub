@@ -31,7 +31,10 @@ func Scan2Epub(chaps []string) error {
 func CheckChapExist(chap string) bool {
 	defaultSource := config.CONFIG_INI.Section("").Key("default").String()
 	url := config.CONFIG_INI.Section(defaultSource).Key("url").String()
-	startAt, _ := config.CONFIG_INI.Section(defaultSource).Key("start_at").Int()
+	startAt, err := config.CONFIG_INI.Section(defaultSource).Key("start_at").Int()
+	if err != nil {
+		return false
+	}
 
 	formatPage := formatPageName(strconv.Itoa(startAt))
 	workingUrl, _ := getWorkingUrl(url, chap, formatPage)
@@ -39,13 +42,15 @@ func CheckChapExist(chap string) bool {
 	return workingUrl != ""
 }
 
-func CronDownloadChap(cronStr, chap string) error {
-	c, err := cron.NewScheduler()
+func CronDownloadChap() error {
+	defaultSource := config.CONFIG_INI.Section("").Key("default").String()
+	cronStr := config.CONFIG_INI.Section(defaultSource).Key("cron").String()
+	currentChap, err := config.CONFIG_INI.Section(defaultSource).Key("cron_chap").Int()
 	if err != nil {
 		return err
 	}
 
-	currentChap, err := strconv.Atoi(chap)
+	c, err := cron.NewScheduler()
 	if err != nil {
 		return err
 	}
@@ -79,7 +84,7 @@ func cronFunc(currentChap *int, ch chan<- error) {
 
 	log.Printf(l.Get("current-chapter"), *currentChap)
 	if !CheckChapExist(strconv.Itoa(*currentChap)) {
-		log.PrintfErr(l.Get("chapter-not-found"), currentChap)
+		log.PrintfErr(l.Get("chapter-not-found"), *currentChap)
 		return
 	}
 

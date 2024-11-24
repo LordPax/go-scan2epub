@@ -23,6 +23,8 @@ func convertChap(chap string) error {
 
 	defaultSource := config.CONFIG_INI.Section("").Key("default").String()
 	epubDir := config.CONFIG_INI.Section(defaultSource).Key("epub_dir").String()
+	createDir := config.CONFIG_INI.Section(defaultSource).Key("create_dir_per_file").MustBool()
+	name := config.CONFIG_INI.Section(defaultSource).Key("name").String()
 	tempDir := os.Getenv("TMP_DIR")
 	pathChap := path.Join(tempDir, chap)
 
@@ -33,6 +35,15 @@ func convertChap(chap string) error {
 	if !utils.FileExist(epubDir) {
 		if err := os.MkdirAll(epubDir, 0755); err != nil {
 			return err
+		}
+	}
+
+	if createDir {
+		epubDir = path.Join(epubDir, fmt.Sprintf("%s %s", name, chap))
+		if !utils.FileExist(epubDir) {
+			if err := os.MkdirAll(epubDir, 0755); err != nil {
+				return err
+			}
 		}
 	}
 
@@ -59,6 +70,7 @@ func createEpub(pages []string, epubDir string, chap string) error {
 	author := config.CONFIG_INI.Section(defaultSource).Key("author").String()
 	description := config.CONFIG_INI.Section(defaultSource).Key("description").String()
 	name := config.CONFIG_INI.Section(defaultSource).Key("name").String()
+	fileName := config.CONFIG_INI.Section(defaultSource).Key("file_name").String()
 
 	epubFile, err := epub.NewEpub(name + " chapter " + chap)
 	if err != nil {
@@ -78,7 +90,11 @@ func createEpub(pages []string, epubDir string, chap string) error {
 		}
 	}
 
-	epubFileName := fmt.Sprintf("%s-%s.epub", name, chap)
+	epubFileName := replaceValue(fileName, map[string]string{
+		"{chap}":   chap,
+		"{name}":   name,
+		"{author}": author,
+	})
 	epubPath := path.Join(epubDir, epubFileName)
 	if err := epubFile.Write(epubPath); err != nil {
 		return err
