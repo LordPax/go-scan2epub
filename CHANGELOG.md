@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+* Add Dockerfile to build and run the application in a container
+
 ## [1.7.0] - 2024-11-24
 
 ### Added
