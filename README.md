@@ -92,16 +92,8 @@ cron_chap=1132
 
 ## Docker
 
-1. Build the image:
-
 ```bash
-docker build -t scan2epub .
-```
-
-2. Run the container:
-
-```bash
-docker run -d --rm --name test -v ./config:/root/.config/scan2epub -v ./books:/books scan2epub:latest
+docker run -d --rm --name scan2epub -v ./config:/root/.config/scan2epub -v ./books:/books lordpax/scan2epub:latest
 ```
 
 ## Docker compose
@@ -111,7 +103,7 @@ version: '3.7'
 
 services:
   scan2epub:
-    image: scan2epub:latest
+    image: lordpax/scan2epub:latest
     container_name: scan2epub
     volumes:
       - ./config:/root/.config/scan2epub
