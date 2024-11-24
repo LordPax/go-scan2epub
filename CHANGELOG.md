@@ -7,6 +7,10 @@
 * Add Dockerfile to build and run the application in a container
 * Add bash script to build docker image
 
+### Changed
+
+* Change value of cron in config example
+
 ## [1.7.0] - 2024-11-24
 
 ### Added
