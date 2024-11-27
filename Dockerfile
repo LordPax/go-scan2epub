@@ -1,27 +1,26 @@
 # Stage 1: Build the application
-FROM golang:1.23-alpine AS builder
+FROM --platform=$BUILDPLATFORM golang:1.23-alpine AS builder
 
 ARG VERSION
 ARG URL=https://github.com/LordPax/go-scan2epub
+ARG TARGETOS
+ARG TARGETARCH
 
 WORKDIR /app
 
+RUN mkdir /books
 RUN apk add --no-cache git && \
     git clone --branch ${VERSION} ${URL} . && \
     go mod download && \
-    go build -o scan2epub
+    GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -o scan2epub
 
 # Stage 2: Create the final lightweight image
 FROM alpine:latest
 
-RUN apk add --no-cache ca-certificates
-
 WORKDIR /
 
 COPY --from=builder /app/scan2epub /scan2epub
-
-RUN mkdir books
-
+COPY --from=builder /books /books
 VOLUME ["/root/.config/scan2epub", "/books"]
 
 CMD ["/scan2epub", "inter"]
