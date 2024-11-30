@@ -13,7 +13,7 @@ var home, _ = os.UserHomeDir()
 
 var (
 	NAME           = "scan2epub"
-	VERSION        = "1.7.0"
+	VERSION        = "1.7.1"
 	CONFIG_DIR     = path.Join(home, ".config", "scan2epub")
 	CONFIG_FILE    = path.Join(CONFIG_DIR, "config.ini")
 	LOG_FILE       = path.Join(CONFIG_DIR, "log")
